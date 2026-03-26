@@ -115,7 +115,7 @@ model-scanner/
 │   │   │   ├── execution/
 │   │   │   │   └── model_executor.py
 │   │   │   │
-│   │   │   └── pipeline_B.py            # 🔥 Person B orchestrator
+│   │   │   └── pipeline_B.py            
 │   │   │
 │   │   ├── evaluation/                # 🔵 PERSON C
 │   │   │   ├── judge/
@@ -134,25 +134,12 @@ model-scanner/
 │   │   │   ├── jailbreak/
 │   │   │   │   └── jailbreak_detector.py
 │   │   │   │
-│   │   │   └── pipeline_C.py            # 🔥 Person C orchestrator
+│   │   │   └── pipeline_C.py            
 │   │   │
 │   │   ├── risk/                      # 🟢 PERSON D
-│   │   │   ├── scoring/
-│   │   │   │   └── risk_engine.py
-│   │   │   │
-│   │   │   ├── breakdown/
-│   │   │   │   └── risk_breakdown.py
-│   │   │   │
-│   │   │   ├── owasp/
-│   │   │   │   └── owasp_mapper.py
-│   │   │   │
-│   │   │   ├── consistency/
-│   │   │   │   └── consistency_checker.py
-│   │   │   │
-│   │   │   ├── reporting/
-│   │   │   │   └── report_generator.py
-│   │   │   │
-│   │   │   └── pipeline_D.py            # 🔥 Person D orchestrator
+│   │   │   ├── risk_engine.py
+│   │   │   ├── report_generator.py
+│   │   │   └── pipeline_D.py            
 │   │   │
 │   │   ├── schemas/                   # Shared contracts
 │   │   │   ├── attack_schema.py
@@ -194,12 +181,11 @@ model-scanner/
 ## **_Project Implementation Schema_** 
 
 ### 1. **_Frontend UI_** : 
-- **_Input Page_** : 
-- **_Results Page_** : 
-- **_DashBoard Page_** : 
+- **_Input Page_** 
+- **_Results Page_**  
+- **_DashBoard Page_**  
 
 ### 2. **_Backend API_** : 
-- 
 
 ### 3. **_Attack/Defense Logic_** : 
 
