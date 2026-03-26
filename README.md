@@ -1,4 +1,4 @@
-# SentinalAI
+# Samurai Security
 
 ## **_Problem statemement_** 
 _A scanning tool that audits AI/ML models and pipelines for security flaws, privacy risks, and bias issues. It produces a risk score and actionable remediation report for each model._
@@ -36,49 +36,158 @@ A **_ML Pipeline_** is in essence an end to end system around any given model , 
 
 ## **_Project Architecture_** 
 ```
-SentinelAI/
+model-scanner/
 │
-├── frontend/                  ← Person A (Frontend)
+├── frontend/                          # 🟣 MEMBER A (UI Layer)
 │   ├── public/
+│   │   └── index.html
+│   │
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── InputBox.jsx
-│   │   │   ├── AttackResults.jsx
-│   │   │   ├── RiskDashboard.jsx
-│   │   │   └── Loader.jsx
+│   │   ├── assets/
+│   │   │   ├── icons/
+│   │   │   └── images/
 │   │   │
-│   │   ├── pages/
-│   │   │   └── Home.jsx
+│   │   ├── components/                # Reusable UI
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Sidebar.jsx
+│   │   │   ├── RiskCard.jsx
+│   │   │   ├── AttackCard.jsx
+│   │   │   ├── Chart.jsx
+│   │   │   ├── Loader.jsx
+│   │   │   └── Modal.jsx
 │   │   │
-│   │   ├── services/
+│   │   ├── pages/                     # Screens
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── ScanPage.jsx
+│   │   │   ├── Simulation.jsx
+│   │   │   ├── Comparison.jsx
+│   │   │   └── Report.jsx
+│   │   │
+│   │   ├── services/                  # API calls
 │   │   │   └── api.js
+│   │   │
+│   │   ├── hooks/
+│   │   │   └── useScan.js
+│   │   │
+│   │   ├── context/
+│   │   │   └── ScanContext.jsx
+│   │   │
+│   │   ├── utils/
+│   │   │   └── helpers.js
+│   │   │
+│   │   ├── styles/
+│   │   │   └── global.css
 │   │   │
 │   │   ├── App.jsx
 │   │   └── main.jsx
 │   │
-│   └── package.json
+│   ├── package.json
+│   └── vite.config.js
 │
-├── backend/                   ← Person B (Backend)
-│   ├── app.py
-│   ├── routes/
-│   │   └── analyze.py
+├── backend/                           # 🔴 CORE BACKEND SYSTEM
 │   │
-│   ├── services/
-│   │   ├── attack_engine.py   ← Person C (AI)
-│   │   ├── scoring.py         ← Person D
-│   │   └── report.py          ← Person D
+│   ├── app/
+│   │   ├── main.py                    # FastAPI entry
+│   │   ├── config.py                  # Configs
+│   │   │
+│   │   ├── routes/                    # API Layer (Integration)
+│   │   │   ├── scan_routes.py
+│   │   │   ├── report_routes.py
+│   │   │   └── health_routes.py
+│   │   │
+│   │   ├── core/                      # 🔴 PERSON B
+│   │   │   ├── input_layer/
+│   │   │   │   └── model_loader.py
+│   │   │   │
+│   │   │   ├── attack_generator/
+│   │   │   │   ├── prompt_templates.py
+│   │   │   │   ├── multi_agent.py
+│   │   │   │   └── attack_builder.py
+│   │   │   │
+│   │   │   ├── adversarial_engine/
+│   │   │   │   ├── mutation_engine.py
+│   │   │   │   └── evolution.py
+│   │   │   │
+│   │   │   ├── simulator/
+│   │   │   │   ├── conversation_simulator.py
+│   │   │   │   └── memory_handler.py
+│   │   │   │
+│   │   │   ├── execution/
+│   │   │   │   └── model_executor.py
+│   │   │   │
+│   │   │   └── pipeline_B.py            # 🔥 Person B orchestrator
+│   │   │
+│   │   ├── evaluation/                # 🔵 PERSON C
+│   │   │   ├── judge/
+│   │   │   │   └── llm_judge.py
+│   │   │   │
+│   │   │   ├── leakage/
+│   │   │   │   ├── embedding_model.py
+│   │   │   │   └── leakage_detector.py
+│   │   │   │
+│   │   │   ├── bias/
+│   │   │   │   └── bias_detector.py
+│   │   │   │
+│   │   │   ├── memory_attack/
+│   │   │   │   └── memory_detector.py
+│   │   │   │
+│   │   │   ├── jailbreak/
+│   │   │   │   └── jailbreak_detector.py
+│   │   │   │
+│   │   │   └── pipeline_C.py            # 🔥 Person C orchestrator
+│   │   │
+│   │   ├── risk/                      # 🟢 PERSON D
+│   │   │   ├── scoring/
+│   │   │   │   └── risk_engine.py
+│   │   │   │
+│   │   │   ├── breakdown/
+│   │   │   │   └── risk_breakdown.py
+│   │   │   │
+│   │   │   ├── owasp/
+│   │   │   │   └── owasp_mapper.py
+│   │   │   │
+│   │   │   ├── consistency/
+│   │   │   │   └── consistency_checker.py
+│   │   │   │
+│   │   │   ├── reporting/
+│   │   │   │   └── report_generator.py
+│   │   │   │
+│   │   │   └── pipeline_D.py            # 🔥 Person D orchestrator
+│   │   │
+│   │   ├── schemas/                   # Shared contracts
+│   │   │   ├── attack_schema.py
+│   │   │   ├── evaluation_schema.py
+│   │   │   └── report_schema.py
+│   │   │
+│   │   ├── database/                  # (Optional but impressive)
+│   │   │   ├── db.py
+│   │   │   └── models.py
+│   │   │
+│   │   ├── utils/
+│   │   │   ├── logger.py
+│   │   │   ├── helpers.py
+│   │   │   └── constants.py
 │   │
-│   ├── models/
-│   │   └── schema.py
+│   ├── tests/
+│   │   ├── test_core.py
+│   │   ├── test_evaluation.py
+│   │   └── test_risk.py
 │   │
-│   └── requirements.txt
+│   ├── requirements.txt
+│   └── run.sh
 │
-├── data/                      ← Person C
-│   └── attack_prompts.json
+├── datasets/                          # 📊 SHARED (ALL MEMBERS)
+│   ├── owasp_llm_top10.json
+│   ├── prompt_templates.json
+│   └── sample_sensitive_data.json
 │
-├── docs/                      ← Person D
-│   └── evaluation_metrics.md
+├── docs/                              # 📄 Documentation
+│   ├── architecture.md
+│   ├── api_docs.md
+│   └── workflow.md
 │
+├── .env
+├── .gitignore
 └── README.md
 ```
 
