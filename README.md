@@ -38,7 +38,7 @@ A **_ML Pipeline_** is in essence an end to end system around any given model , 
 ```
 model-scanner/
 │
-├── frontend/                          # 🟣 MEMBER A (UI Layer)
+├── frontend/                          # 🟣 MEMBER A (UI / Visualization)
 │   ├── public/
 │   │   └── index.html
 │   │
@@ -47,23 +47,25 @@ model-scanner/
 │   │   │   ├── icons/
 │   │   │   └── images/
 │   │   │
-│   │   ├── components/                # Reusable UI
+│   │   ├── components/
 │   │   │   ├── Navbar.jsx
 │   │   │   ├── Sidebar.jsx
 │   │   │   ├── RiskCard.jsx
 │   │   │   ├── AttackCard.jsx
 │   │   │   ├── Chart.jsx
 │   │   │   ├── Loader.jsx
-│   │   │   └── Modal.jsx
+│   │   │   ├── Modal.jsx
+│   │   │   ├── RecommendationCard.jsx     # 🔥 shows fixes
+│   │   │   └── ApprovalPanel.jsx          # 🔥 human approval UI
 │   │   │
-│   │   ├── pages/                     # Screens
+│   │   ├── pages/
 │   │   │   ├── Dashboard.jsx
 │   │   │   ├── ScanPage.jsx
 │   │   │   ├── Simulation.jsx
 │   │   │   ├── Comparison.jsx
-│   │   │   └── Report.jsx
+│   │   │   └── Report.jsx                 # includes risk + recommendations
 │   │   │
-│   │   ├── services/                  # API calls
+│   │   ├── services/
 │   │   │   └── api.js
 │   │   │
 │   │   ├── hooks/
@@ -84,18 +86,19 @@ model-scanner/
 │   ├── package.json
 │   └── vite.config.js
 │
-├── backend/                           # 🔴 CORE BACKEND SYSTEM
-│   │
+├── backend/                           # 🔴 CORE BACKEND
+│
 │   ├── app/
 │   │   ├── main.py                    # FastAPI entry
-│   │   ├── config.py                  # Configs
-│   │   │
-│   │   ├── routes/                    # API Layer (Integration)
+│   │   ├── config.py
+│   │
+│   │   ├── routes/                    # API Layer
 │   │   │   ├── scan_routes.py
 │   │   │   ├── report_routes.py
+│   │   │   ├── approval_routes.py     # 🔥 human-in-loop
 │   │   │   └── health_routes.py
-│   │   │
-│   │   ├── core/                      # 🔴 PERSON B
+│   │
+│   │   ├── core/                      # 🔴 MEMBER B
 │   │   │   ├── input_layer/
 │   │   │   │   └── model_loader.py
 │   │   │   │
@@ -115,9 +118,22 @@ model-scanner/
 │   │   │   ├── execution/
 │   │   │   │   └── model_executor.py
 │   │   │   │
-│   │   │   └── pipeline_B.py            
+│   │   │   ├── config_scanner/        # 🔥 NEW
+│   │   │   │   ├── config_parser.py
+│   │   │   │   ├── dependency_checker.py
+│   │   │   │   └── secret_detector.py
+│   │   │   │
+│   │   │   ├── guardrails/            # 🔥 NEW
+│   │   │   │   ├── system_prompt_manager.py
+│   │   │   │   ├── input_filter.py
+│   │   │   │   └── content_classifier.py
+│   │   │   │
+│   │   │   ├── security/              # 🔥 NEW
+│   │   │   │   └── permission_checker.py
+│   │   │   │
+│   │   │   └── pipeline.py            # 🔥 Person B orchestrator
 │   │   │
-│   │   ├── evaluation/                # 🔵 PERSON C
+│   │   ├── evaluation/                # 🔵 MEMBER C
 │   │   │   ├── judge/
 │   │   │   │   └── llm_judge.py
 │   │   │   │
@@ -134,19 +150,44 @@ model-scanner/
 │   │   │   ├── jailbreak/
 │   │   │   │   └── jailbreak_detector.py
 │   │   │   │
-│   │   │   └── pipeline_C.py            
+│   │   │   ├── guardrails/            # 🔥 NEW
+│   │   │   │   └── output_filter.py
+│   │   │   │
+│   │   │   ├── validators/            # 🔥 NEW
+│   │   │   │   └── output_validator.py
+│   │   │   │
+│   │   │   └── pipeline.py            # 🔥 Person C orchestrator
 │   │   │
-│   │   ├── risk/                      # 🟢 PERSON D
-│   │   │   ├── risk_engine.py
-│   │   │   ├── report_generator.py
-│   │   │   └── pipeline_D.py            
+│   │   ├── risk/                      # 🟢 MEMBER D
+│   │   │   ├── scoring/
+│   │   │   │   └── risk_engine.py
+│   │   │   │
+│   │   │   ├── breakdown/
+│   │   │   │   └── risk_breakdown.py
+│   │   │   │
+│   │   │   ├── owasp/
+│   │   │   │   └── owasp_mapper.py
+│   │   │   │
+│   │   │   ├── consistency/
+│   │   │   │   └── consistency_checker.py
+│   │   │   │
+│   │   │   ├── mitigation/
+│   │   │   │   └── recommendation_engine.py
+│   │   │   │
+│   │   │   ├── human_in_loop/
+│   │   │   │   └── approval_system.py
+│   │   │   │
+│   │   │   ├── reporting/
+│   │   │   │   └── report_generator.py
+│   │   │   │
+│   │   │   └── pipeline.py            # 🔥 Person D orchestrator
 │   │   │
-│   │   ├── schemas/                   # Shared contracts
+│   │   ├── schemas/
 │   │   │   ├── attack_schema.py
 │   │   │   ├── evaluation_schema.py
 │   │   │   └── report_schema.py
 │   │   │
-│   │   ├── database/                  # (Optional but impressive)
+│   │   ├── database/                  # Optional
 │   │   │   ├── db.py
 │   │   │   └── models.py
 │   │   │
@@ -163,12 +204,11 @@ model-scanner/
 │   ├── requirements.txt
 │   └── run.sh
 │
-├── datasets/                          # 📊 SHARED (ALL MEMBERS)
-│   ├── owasp_llm_top10.json
-│   ├── prompt_templates.json
-│   └── sample_sensitive_data.json
+├── datasets/                          # 📊 SHARED
+│   ├── owasp_mapping.json 
+│   ├──prompt_templates.json 
 │
-├── docs/                              # 📄 Documentation
+├── docs/
 │   ├── architecture.md
 │   ├── api_docs.md
 │   └── workflow.md
