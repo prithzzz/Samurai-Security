@@ -206,7 +206,7 @@ model-scanner/
 │
 ├── datasets/                          # 📊 SHARED
 │   ├── owasp_mapping.json 
-│   ├──prompt_templates.json 
+│   └── prompt_templates.json
 │
 ├── docs/
 │   ├── architecture.md
