@@ -1,11 +1,11 @@
-# 1.Prompt Injection! 
+# 1. Prompt Injection! 
 
 A Prompt Injection Vulnerability occurs when a user gives weird prompts , those kinds of prompts which make the LLM act or respond in a unintended ways...basically like a super toxic friend...you knoww...like how his toxic statements kinda start impacting how you take decisions...similar way...
 
 Now now , When it comes to AI , there prompts not necessarily be human readable , they can also be contents which **_only the model can understand_**
 
 This is really really a alarming situation because it causes an AI to 
- 1. Violate their own guidelines 
+ 1. Violate their own guidelines .
  2. Enable unauthorized access 
  3. genrate harmful content 
  4. influence critical decisions 
@@ -92,7 +92,7 @@ Alongside this the rise of open access LLM's and and new ``"fine tuning"`` metho
 
 4. ``Implement strict monitoring and auditing practices for collaborative model development``
 
-# Data and Model Poisoning 
+# 4. Data and Model Poisoning 
 _Soooooooooooo_ data poisoning occurs when  ```pre-training, fine-tuning, or embedding data``` is **_manipulated_** to introduce vulnerabilities, backdoors, or biases
 
 Thus Compromising your model's security , performance or ethical behavior leading to harmful outputs 
