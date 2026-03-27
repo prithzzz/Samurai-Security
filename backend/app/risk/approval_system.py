@@ -34,7 +34,14 @@ def create_approval_request(report: dict) -> dict:
         "risk_level": report.get("risk_level"),
         "risk_score": report.get("risk_score"),
         "summary": generate_summary(report),
-        "report_snapshot": report
+        "report_summary": {
+            "model": report.get("model"),
+            "risk_score": report.get("risk_score"),
+            "risk_level": report.get("risk_level"),
+            "top_vulnerabilities": [
+                v.get("name") for v in report.get("identified_vulnerabilities", [])[:3]
+            ]
+        }
     }
 
     APPROVAL_STORE[approval_id] = approval_request
