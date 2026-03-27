@@ -159,27 +159,11 @@ model-scanner/
 │   │   │   └── pipeline.py            # 🔥 Person C orchestrator
 │   │   │
 │   │   ├── risk/                      # 🟢 MEMBER D
-│   │   │   ├── scoring/
-│   │   │   │   └── risk_engine.py
-│   │   │   │
-│   │   │   ├── breakdown/
-│   │   │   │   └── risk_breakdown.py
-│   │   │   │
-│   │   │   ├── owasp/
-│   │   │   │   └── owasp_mapper.py
-│   │   │   │
-│   │   │   ├── consistency/
-│   │   │   │   └── consistency_checker.py
-│   │   │   │
-│   │   │   ├── mitigation/
-│   │   │   │   └── recommendation_engine.py
-│   │   │   │
-│   │   │   ├── human_in_loop/
-│   │   │   │   └── approval_system.py
-│   │   │   │
-│   │   │   ├── reporting/
-│   │   │   │   └── report_generator.py
-│   │   │   │
+│   │   │   ├── risk_engine.py (risk_engine, risk_breakdown, consistency_checker)
+│   │   │   ├── owasp_mapper.py
+│   │   │   ├── recommendation_engine.py
+│   │   │   ├── approval_system.py
+│   │   │   ├── report_generator.py
 │   │   │   └── pipeline.py            # 🔥 Person D orchestrator
 │   │   │
 │   │   ├── schemas/
