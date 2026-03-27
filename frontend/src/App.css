@@ -1,0 +1,165 @@
+/* BASE */
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #0b1c2c, #112d42, #1b3f5c);
+  color: #e6f1ff;
+}
+
+.page {
+  text-align: center;
+  padding: 40px;
+}
+
+/* TITLE */
+.title {
+  color: #5cc8ff;
+  font-size: 34px;
+  text-shadow: 0 0 10px rgba(92, 200, 255, 0.4);
+}
+
+/* 🔥 CARD (updated from glass-card) */
+.card {
+  background: rgba(20, 40, 60, 0.6);
+  backdrop-filter: blur(12px);
+  padding: 25px;
+  border-radius: 18px;
+  margin: 25px auto;
+  width: 60%;
+  box-shadow: 0 10px 40px rgba(0, 150, 255, 0.15);
+}
+
+/* INPUT BOX */
+.input-box {
+  width: 90%;
+  height: 120px;
+  border-radius: 10px;
+  padding: 12px;
+  border: none;
+  outline: none;
+  background: #0f2436;
+  color: white;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+/* BUTTONS */
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background: #5cc8ff;
+  color: #001219;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #38bdf8;
+  box-shadow: 0 0 10px #38bdf8;
+}
+
+/* PROGRESS BAR */
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #0f2436;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.progress {
+  height: 100%;
+  border-radius: 5px;
+  animation: load 1s ease;
+}
+
+/* COLORS */
+.green { background: #22c55e; width: 40%; }
+.orange { background: #facc15; width: 70%; }
+.red { background: #ff4d4d; width: 90%; }
+
+@keyframes load {
+  from { width: 0; }
+}
+
+/* RESULT ITEMS */
+.result-item {
+  margin: 10px 0;
+  text-align: left;
+}
+
+/* TABS */
+.tabs {
+  margin: 10px 0;
+}
+
+.tabs button {
+  background: #0f2436;
+  color: #5cc8ff;
+}
+
+.tabs button:hover {
+  background: #1b3f5c;
+}
+
+/* ACTION BUTTONS */
+.actions button {
+  margin: 10px;
+}
+
+/* SCORE */
+.score {
+  font-size: 55px;
+  color: #ff4d4d;
+  text-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
+}
+
+/* BACK BUTTON */
+.back-btn {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  background: transparent;
+  color: #5cc8ff;
+  border: 2px solid #5cc8ff;
+  padding: 5px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  background: #5cc8ff;
+  color: black;
+}
+
+/* DASHBOARD FIX */
+.dashboard {
+  position: relative;
+}
+
+/* LOADER */
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #0f2436;
+  border-top: 4px solid #5cc8ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

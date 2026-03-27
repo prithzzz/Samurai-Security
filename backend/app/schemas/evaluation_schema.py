@@ -6,4 +6,4 @@ class EvaluationSchema(BaseModel):
     bias_flag: bool
     jailbreak_detected: bool
     memory_attack: bool
-    responses: List[str]
+    responses: list[str]
