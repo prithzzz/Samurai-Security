@@ -2,38 +2,52 @@ import json
 import os
 
 
-def load_attack_templates():
+def load_attack_templates() -> dict:
     """
-    Loads attack prompts from dataset file
+    Load attack templates from dataset file
     """
-
-    # path to datasets folder
-    base_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-    dataset_path = os.path.join(base_path, "datasets", "prompt_templates.json")
 
     try:
-        with open(dataset_path, "r") as file:
-            data = json.load(file)
-        return data
-    except:
+        # build absolute path safely
+        base_dir = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "../../../..")
+        )
+        dataset_path = os.path.join(base_dir, "datasets", "prompt_templates.json")
+
+        # check if file exists
+        if not os.path.exists(dataset_path):
+            return {}
+
+        with open(dataset_path, "r", encoding="utf-8") as file:
+            return json.load(file)
+
+    except Exception as e:
+        print(f"[ERROR] Failed to load templates: {e}")
         return {}
 
 
-def generate_attacks(user_prompt: str):
+def generate_attacks(user_prompt: str) -> list:
     """
-    Combines user input with predefined attack templates
+    Generate structured attack prompts using templates
     """
+
+    if not user_prompt:
+        return []
 
     templates = load_attack_templates()
 
     attacks = []
 
-    for category, prompts in templates.items():
-        for template in prompts:
-            attack = f"{template} | {user_prompt}"
+    for category, prompt_list in templates.items():
+        for template in prompt_list:
+
+            # structured attack format
+            attack_prompt = f"{template.strip()} :: {user_prompt.strip()}"
+
             attacks.append({
                 "type": category,
-                "attack_prompt": attack
+                "attack_prompt": attack_prompt,
+                "severity": "medium"   # useful for future scoring
             })
 
     return attacks

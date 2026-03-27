@@ -1,22 +1,32 @@
 def check_dependencies(dependencies: list) -> list:
     """
-    Checks for unsafe or outdated dependencies
+    Analyze dependencies for potential security risks
     """
+
+    if not dependencies:
+        return []
 
     issues = []
 
-    if not dependencies:
-        return issues
-
-    # example risky libraries (just for demo)
-    risky_packages = [
-        "pickle",
-        "subprocess",
-        "os.system"
-    ]
+    # known risky / sensitive modules
+    risky_packages = {
+        "pickle": "Can execute arbitrary code during deserialization",
+        "subprocess": "Can execute system-level commands",
+        "os.system": "Direct system command execution",
+        "eval": "Executes arbitrary Python code",
+        "exec": "Executes dynamic code"
+    }
 
     for dep in dependencies:
-        if dep in risky_packages:
-            issues.append(f"Potentially unsafe dependency: {dep}")
+        dep_name = str(dep).lower()
+
+        for risky, reason in risky_packages.items():
+            if risky in dep_name:
+                issues.append({
+                    "dependency": dep,
+                    "issue": "Unsafe dependency usage",
+                    "risk": reason,
+                    "severity": "high"
+                })
 
     return issues

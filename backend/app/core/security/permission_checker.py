@@ -1,18 +1,24 @@
-def classify_content(text: str) -> str:
+def check_permission(content_type: str) -> dict:
     """
-    Classifies input into basic categories
+    Determines whether input is allowed based on content classification
     """
 
-    if not text:
-        return "empty"
+    if not content_type:
+        return {
+            "allowed": False,
+            "reason": "unknown_content"
+        }
 
-    text_lower = text.lower()
+    # policy rules
+    restricted_types = ["malicious"]
 
-    # simple keyword-based classification
-    if any(word in text_lower for word in ["hack", "bypass", "exploit"]):
-        return "malicious"
+    if content_type in restricted_types:
+        return {
+            "allowed": False,
+            "reason": f"blocked due to {content_type} content"
+        }
 
-    if any(word in text_lower for word in ["hello", "hi", "help"]):
-        return "benign"
-
-    return "unknown"
+    return {
+        "allowed": True,
+        "reason": "permitted"
+    }

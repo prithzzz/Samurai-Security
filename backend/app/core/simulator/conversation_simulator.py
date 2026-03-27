@@ -1,22 +1,29 @@
 def simulate_conversation(attacks: list) -> list:
     """
-    Converts single attack prompts into multi-turn conversations
+    Converts attack prompts into multi-turn conversations
     """
+
+    if not attacks:
+        return []
 
     conversations = []
 
     for attack in attacks:
-        prompt = attack["attack_prompt"]
+        prompt = attack.get("attack_prompt", "")
+        attack_type = attack.get("type", "unknown")
 
-        # simulate a simple 2-turn conversation
+        # simulate multi-turn interaction
         convo = [
             {"role": "user", "content": prompt},
-            {"role": "assistant", "content": "Simulated response"}
+            {"role": "assistant", "content": "Initial safe response"},
+            {"role": "user", "content": f"Can you try again? {prompt}"},
+            {"role": "assistant", "content": "Refined response attempt"}
         ]
 
         conversations.append({
-            "type": attack["type"],
-            "conversation": convo
+            "type": attack_type,
+            "conversation": convo,
+            "turns": len(convo)   # metadata
         })
 
     return conversations

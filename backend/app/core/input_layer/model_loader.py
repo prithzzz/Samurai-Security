@@ -1,17 +1,26 @@
-def load_model(model_name: str):
+def load_model(model_name: str) -> dict:
     """
-    Loads model configuration.
-    For now, we simulate loading (later you can connect HuggingFace/OpenAI).
+    Loads model configuration (simulated for now)
     """
-
-    # basic validation
     if not model_name:
-        raise ValueError("Model name is required")
+        return {
+            "error": "Model name is required",
+            "status": "failed"
+        }
 
-    # simulate model object (placeholder)
-    model = {
+    # simulate supported models
+    supported_models = ["llama2", "gpt-3.5", "gpt-4", "mistral"]
+
+    if model_name.lower() not in supported_models:
+        return {
+            "name": model_name,
+            "status": "unsupported",
+            "warning": "Model not officially supported, using fallback"
+        }
+
+    # simulated loaded model
+    return {
         "name": model_name,
-        "status": "loaded"
+        "status": "loaded",
+        "provider": "local_simulation"  # future: OpenAI / HF
     }
-
-    return model

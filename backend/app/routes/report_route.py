@@ -1,7 +1,6 @@
 from fastapi import APIRouter
 from app.schemas.evaluation_schema import EvaluationSchema
-from backend.app.risk.pipeline import run_risk_pipeline
-
+from app.risk.pipeline import run_risk_pipeline
 router = APIRouter()
 
 @router.post("/generate-report")

@@ -1,35 +1,35 @@
 # guardrails
-from core.guardrails.input_filter import filter_input
-from core.guardrails.content_classifier import classify_content
-from core.guardrails.system_prompt_manager import apply_system_prompt
+from app.core.guardrails.input_filter import filter_input
+from app.core.guardrails.content_classifier import classify_content
+from app.core.guardrails.system_prompt_manager import apply_system_prompt
 
 # security
-from core.security.permission_checker import check_permission
+from app.core.security.permission_checker import check_permission
 
 # config scanner
-from core.config_scanner.config_parser import scan_config
-from core.config_scanner.secret_detector import detect_secrets
+from app.core.config_scanner.config_parser import scan_config
+from app.core.config_scanner.secret_detector import detect_secrets
 
 # attack system
-from core.attack_generator.attack_builder import generate_attacks
-from core.attack_generator.multi_agent import generate_multi_agent_attacks
+from app.core.attack_generator.attack_builder import generate_attacks
+from app.core.attack_generator.multi_agent import generate_multi_agent_attacks
 
 # adversarial
-from core.adversarial_engine.mutation_engine import mutate_attacks
-from core.adversarial_engine.evolution import evolve_attacks
+from app.core.adversarial_engine.mutation_engine import mutate_attacks
+from app.core.adversarial_engine.evolution import evolve_attacks
 
 # simulation
-from core.simulator.conversation_simulator import simulate_conversation
-from core.simulator.memory_handler import attach_memory
+from app.core.simulator.conversation_simulator import simulate_conversation
+from app.core.simulator.memory_handler import attach_memory
 
 # execution
-from core.input_layer.model_loader import load_model
-from core.execution.model_executor import execute_model
+from app.core.input_layer.model_loader import load_model
+from app.core.execution.model_executor import execute_model
 
 
 def run_core(input_data: dict) -> dict:
     """
-    Full upgraded pipeline (Person B)
+    Final integrated pipeline (Person B)
     """
 
     # extract input
@@ -38,20 +38,36 @@ def run_core(input_data: dict) -> dict:
     config = input_data.get("config", {})
 
     # 1. filter input
-    clean_input = filter_input(user_prompt)
+    filter_result = filter_input(user_prompt)
+
+    if filter_result["blocked"]:
+        return {
+            "error": "Input blocked",
+            "reason": filter_result["reason"]
+        }
+
+    clean_input = filter_result["cleaned"]
 
     # 2. classify content
-    content_type = classify_content(clean_input)
+    classification = classify_content(clean_input)
+    content_type = classification["label"]
 
     # 3. permission check
-    if not check_permission(content_type):
-        return {"error": "Blocked due to malicious content"}
+    permission = check_permission(content_type)
+
+    if not permission["allowed"]:
+        return {
+            "error": "Access denied",
+            "reason": permission["reason"]
+        }
 
     # 4. apply system prompt
-    secured_prompt = apply_system_prompt(clean_input)
+    system_result = apply_system_prompt(clean_input)
+    secured_prompt = system_result["final_prompt"]
 
     # 5. scan config
-    config_issues = scan_config(config)
+    config_with_model = {**config, "model": model_name}
+    config_issues = scan_config(config_with_model)
 
     # 6. detect secrets
     secret_issues = detect_secrets(secured_prompt)
@@ -59,13 +75,12 @@ def run_core(input_data: dict) -> dict:
     # 7. generate base attacks
     attacks = generate_attacks(secured_prompt)
 
-    # 8. add multi-agent attacks
+    # 8. multi-agent attacks
     multi_agent_attacks = generate_multi_agent_attacks(secured_prompt)
 
-    # convert multi-agent to same format
     for attack in multi_agent_attacks:
         attacks.append({
-            "type": attack["role"],
+            "type": attack["type"],
             "attack_prompt": attack["attack_prompt"]
         })
 
@@ -84,26 +99,36 @@ def run_core(input_data: dict) -> dict:
     # 13. load model
     model = load_model(model_name)
 
+    if model.get("status") == "failed":
+        return {"error": model.get("error")}
+
     # 14. execute model
     results = []
 
     for convo in conversations:
-        prompt = convo["conversation"][0]["content"]
+        prompt = convo.get("conversation", [{}])[0].get("content", "")
 
-        response = execute_model(model, prompt)
+        exec_result = execute_model(model, prompt)
 
         results.append({
-            "type": convo["type"],
+            "type": convo.get("type", "unknown"),
             "prompt": prompt,
-            "response": response
+            "response": exec_result.get("response"),
+            "risk_flag": exec_result.get("risk_flag"),
+            "status": exec_result.get("status")
         })
 
     # final output
     return {
         "model": model_name,
-        "content_type": content_type,
+        "content_classification": classification,
         "config_issues": config_issues,
         "secret_issues": secret_issues,
         "total_attacks": len(results),
-        "results": results
+        "results": results,
+        "summary": {
+        "total": len(results),
+        "risky": sum(1 for r in results if r.get("risk_flag")),
+        "safe": sum(1 for r in results if not r.get("risk_flag"))
+        }
     }

@@ -2,17 +2,26 @@ import json
 import os
 
 
-def get_prompt_templates():
+def get_prompt_templates() -> dict:
     """
-    Loads prompt templates from dataset
+    Load prompt templates from dataset (shared utility)
     """
-
-    base_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-    dataset_path = os.path.join(base_path, "datasets", "prompt_templates.json")
 
     try:
-        with open(dataset_path, "r") as file:
-            data = json.load(file)
-        return data
-    except:
+        # safe absolute path
+        base_dir = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "../../../..")
+        )
+        dataset_path = os.path.join(base_dir, "datasets", "prompt_templates.json")
+
+        # check existence
+        if not os.path.exists(dataset_path):
+            print("[WARNING] prompt_templates.json not found")
+            return {}
+
+        with open(dataset_path, "r", encoding="utf-8") as file:
+            return json.load(file)
+
+    except Exception as e:
+        print(f"[ERROR] Failed to load prompt templates: {e}")
         return {}
