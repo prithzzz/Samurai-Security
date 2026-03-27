@@ -5,7 +5,7 @@ export default function Navbar() {
 
   return (
     <div className="navbar">
-      <h2>SentinelAI</h2>
+      <h2>Samurai Security</h2>
 
       <div>
         <button onClick={() => navigate("/")}>Dashboard</button>
