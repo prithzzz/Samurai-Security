@@ -137,6 +137,11 @@ def run_core(input_data: dict) -> dict:
     except Exception as e:
         risk_result = {"error": str(e)}
 
+    # calculate risky and safe summary
+    risky_count = sum(1 for r in evaluation_result.get("detailed_results", []) if len(r.get("issues", [])) > 0)
+    total_count = len(results)
+    safe_count = total_count - risky_count
+
     # final output
     return {
         "model": model_name,
@@ -144,13 +149,13 @@ def run_core(input_data: dict) -> dict:
         "content_classification": classification,
         "config_issues": config_issues,
         "secret_issues": secret_issues,
-        "total_attacks": len(results),
+        "total_attacks": total_count,
         "results": results,
         "evaluation": evaluation_result,
         "risk_analysis": risk_result,
         "summary": {
-            "total": len(results),
-            "risky": sum(1 for r in results if r.get("risk_flag")),
-            "safe": sum(1 for r in results if not r.get("risk_flag"))
+            "total": total_count,
+            "risky": risky_count,
+            "safe": safe_count
         }
     }

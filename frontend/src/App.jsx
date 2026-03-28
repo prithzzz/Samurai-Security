@@ -11,10 +11,11 @@ function App() {
       <Navbar />
 
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<ScanPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/scan" element={<ScanPage />} />
         <Route path="/report" element={<Report />} />
-        <Route path="/heal" element = {<HealPage />} />
+        <Route path="/heal" element={<HealPage />} />
       </Routes>
     </BrowserRouter>
   );

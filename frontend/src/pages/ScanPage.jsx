@@ -13,8 +13,17 @@ export default function ScanPage() {
 
       console.log("Backend response:", result);
 
+      if (!result) {
+        alert("Failed to connect to the backend server.");
+        return;
+      }
+      if (result.error) {
+        alert("Scanner Error: " + result.error + (result.reason ? ` - ${result.reason}` : ""));
+        return;
+      }
+
       // ✅ send result to report page
-      navigate("/report", { state: { result } });
+      navigate("/report", { state: { result, prompt } });
 
     } catch (error) {
       console.error("Scan failed:", error);

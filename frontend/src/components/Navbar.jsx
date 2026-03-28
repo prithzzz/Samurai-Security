@@ -8,8 +8,8 @@ export default function Navbar() {
       <h2>Samurai Security</h2>
 
       <div>
-        <button onClick={() => navigate("/")}>Dashboard</button>
-        <button onClick={() => navigate("/scan")}>Scan</button>
+        <button onClick={() => navigate("/dashboard")}>Dashboard</button>
+        <button onClick={() => navigate("/")}>Scan</button>
         <button onClick={() => navigate("/report")}>Report</button>
         <button
           onClick={() => navigate("/heal")}
