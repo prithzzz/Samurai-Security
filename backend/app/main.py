@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware  
 from app.routes.report_route import router as report_router
 from app.routes.scan_route import router as scan_router   
+from app.routes.evaluation_route import router as evaluation_router   
+from app.routes.approval_route import router as approval_router   
+
 
 app = FastAPI()
 
