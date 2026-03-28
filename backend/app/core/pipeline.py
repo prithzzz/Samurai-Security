@@ -140,6 +140,7 @@ def run_core(input_data: dict) -> dict:
     # final output
     return {
         "model": model_name,
+        "system_prompt": input_data.get("system_prompt", ""),
         "content_classification": classification,
         "config_issues": config_issues,
         "secret_issues": secret_issues,

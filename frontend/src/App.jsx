@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import ScanPage from "./pages/ScanPage";
 import Report from "./pages/Report";
+import HealPage from "./pages/healPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/scan" element={<ScanPage />} />
         <Route path="/report" element={<Report />} />
+        <Route path="/heal" element = {<HealPage />} />
       </Routes>
     </BrowserRouter>
   );
