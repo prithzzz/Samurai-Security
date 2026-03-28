@@ -96,13 +96,13 @@ export default function HealPage() {
     }
 
     const payload = {
-      systemPrompt,
-      riskReport:   prefill.riskReport   || {},
-      evaluation:   prefill.evaluation   || {},
-      threshold,
-      selfHeal,
+        systemPrompt,
+        riskReport: prefill.riskReport || {},
+        evaluation: prefill.evaluation || {},
+        threshold,
+        selfHeal,
     };
-
+    console.log("HEAL PAYLOAD:", payload);
     const data = await healModel(payload);
 
     if (!data) {

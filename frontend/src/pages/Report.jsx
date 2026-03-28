@@ -8,6 +8,10 @@ export default function Report() {
   const navigate  = useNavigate();
 
   const result     = location.state?.result || {};
+
+  console.log("FULL RESULT:", result);
+  console.log("RISK:", result.risk_analysis);
+
   const risk       = result.risk_analysis   || {};
   const evaluation = result.evaluation      || {};
   const summary    = result.summary         || {};
@@ -22,10 +26,10 @@ export default function Report() {
   const handleHeal = () => {
     navigate("/heal", {
       state: {
-        systemPrompt,
-        riskReport:  risk,
-        evaluation,
-      },
+        systemPrompt: systemPrompt,
+        riskReport: risk,
+        evaluation: evaluation
+      }
     });
   };
 
