@@ -2,12 +2,15 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { analyzeModel } from "../services/api"; // ✅ import API
 
-export default function ScanPage() {
+export default function ScanPage({ setScanData }) {
   const navigate = useNavigate();
   const [prompt, setPrompt] = useState("");
 
   const handleAnalyze = async () => {
     try {
+      // ✅ clear old values on new scan
+      setScanData(null);
+
       // ✅ call backend
       const result = await analyzeModel(prompt);
 
@@ -22,8 +25,9 @@ export default function ScanPage() {
         return;
       }
 
-      // ✅ send result to report page
-      navigate("/report", { state: { result, prompt } });
+      // ✅ save in ram so refresh kills it, and navigate
+      setScanData({ result, prompt });
+      navigate("/report");
 
     } catch (error) {
       console.error("Scan failed:", error);

@@ -3,11 +3,20 @@ import { useLocation, useNavigate } from "react-router-dom";
 const scoreColor = (s) =>
   s >= 8 ? "#ef4444" : s >= 5 ? "#f59e0b" : "#22c55e";
 
-export default function Report() {
-  const location = useLocation();
+export default function Report({ scanData }) {
   const navigate  = useNavigate();
 
-  const result     = location.state?.result || {};
+  if (!scanData) {
+    return (
+      <div className="report-page fade-in" style={{ textAlign: "center", marginTop: "100px" }}>
+        <h2>No analysis data found</h2>
+        <p style={{ color: "gray" }}>Please return to the Scan page and run an analysis to view the report.</p>
+        <button className="analyze-btn" onClick={() => navigate("/")} style={{ marginTop: 20 }}>Go to Scan</button>
+      </div>
+    );
+  }
+
+  const result     = scanData.result || {};
 
   console.log("FULL RESULT:", result);
   console.log("RISK:", result.risk_analysis);
@@ -15,7 +24,7 @@ export default function Report() {
   const risk       = result.risk_analysis   || {};
   const evaluation = result.evaluation      || {};
   const summary    = result.summary         || {};
-  const systemPrompt = result.system_prompt || location.state?.prompt || "";
+  const systemPrompt = result.system_prompt || scanData.prompt || "";
 
   const score      = risk.risk_score  ?? "—";
   const level      = risk.risk_level  ?? "—";
