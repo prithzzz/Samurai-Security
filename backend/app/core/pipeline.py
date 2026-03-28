@@ -26,6 +26,13 @@ from app.core.simulator.memory_handler import attach_memory
 from app.core.input_layer.model_loader import load_model
 from app.core.execution.model_executor import execute_model
 
+# config
+from app.config import MODEL_NAME
+
+# integrations
+from app.evaluation.pipeline import run_evaluation_pipeline
+from app.risk.pipeline import run_risk_pipeline
+
 
 def run_core(input_data: dict) -> dict:
     """
@@ -33,7 +40,7 @@ def run_core(input_data: dict) -> dict:
     """
 
     # extract input
-    model_name = input_data.get("model", "")
+    model_name = input_data.get("model", MODEL_NAME)
     user_prompt = input_data.get("prompt", "")
     config = input_data.get("config", {})
 
@@ -80,7 +87,7 @@ def run_core(input_data: dict) -> dict:
 
     for attack in multi_agent_attacks:
         attacks.append({
-            "type": attack["type"],
+            "type": attack.get("type", attack.get("role", "unknown")),
             "attack_prompt": attack["attack_prompt"]
         })
 
@@ -118,6 +125,18 @@ def run_core(input_data: dict) -> dict:
             "status": exec_result.get("status")
         })
 
+    # 15. evaluation (Person C)
+    try:
+        evaluation_result = run_evaluation_pipeline(results)
+    except Exception as e:
+        evaluation_result = {"error": str(e)}
+
+    # 16. risk engine (Person D)
+    try:
+        risk_result = run_risk_pipeline(model_name, evaluation_result)
+    except Exception as e:
+        risk_result = {"error": str(e)}
+
     # final output
     return {
         "model": model_name,
@@ -126,9 +145,11 @@ def run_core(input_data: dict) -> dict:
         "secret_issues": secret_issues,
         "total_attacks": len(results),
         "results": results,
+        "evaluation": evaluation_result,
+        "risk_analysis": risk_result,
         "summary": {
-        "total": len(results),
-        "risky": sum(1 for r in results if r.get("risk_flag")),
-        "safe": sum(1 for r in results if not r.get("risk_flag"))
+            "total": len(results),
+            "risky": sum(1 for r in results if r.get("risk_flag")),
+            "safe": sum(1 for r in results if not r.get("risk_flag"))
         }
     }
