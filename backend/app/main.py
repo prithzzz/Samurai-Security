@@ -8,7 +8,6 @@ from app.routes.heal_route import router as heal_router
 
 app = FastAPI()
 
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -16,11 +15,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-@app.post("/scan")
-def scan(data: dict):
-    return {"status": "success", "data": data}
 
 app.include_router(scan_router)   
 app.include_router(evaluation_router)  
