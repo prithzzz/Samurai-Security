@@ -6,8 +6,7 @@ from app.routes.approval_route import router as approval_router
 app = FastAPI()
 
 app.include_router(scan_router)   
-#app.include_router(evaluation_router)  
-app.include_router(evaluation_router, prefix="/api")  
+app.include_router(evaluation_router)  
 app.include_router(report_router)
 app.include_router(approval_router) 
 
