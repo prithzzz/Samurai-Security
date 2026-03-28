@@ -352,28 +352,7 @@ export default function HealPage() {
                 </div>
               )}
 
-              {/* Patch log accordion */}
-              {result.patch_log?.length > 0 && (
-                <div style={{ background:"rgba(20,40,60,0.7)", border:"1px solid #1e3a50", borderRadius:14, padding:20 }}>
-                  <div style={{ fontSize:"0.68rem", color:"#64748b", letterSpacing:"0.07em",
-                    textTransform:"uppercase", marginBottom:12 }}>Patch Log</div>
-                  {result.patch_log.map((iter) => (
-                    <div key={iter.iteration} style={{ marginBottom:12 }}>
-                      <div style={{ fontSize:"0.72rem", color:"#5cc8ff", marginBottom:4 }}>
-                        Iteration {iter.iteration} · score after: {iter.score_after} · {iter.duration_ms}ms
-                      </div>
-                      {iter.patches_applied?.map((p, i) => (
-                        <div key={i} style={{
-                          fontSize:"0.7rem", color:"#22c55e", paddingLeft:12,
-                          borderLeft:"2px solid #22c55e", marginBottom:4,
-                        }}>
-                          ✦ {p.patch} — <span style={{ color:"#94a3b8" }}>{p.vulnerability}</span>
-                        </div>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              )}
+
 
               {/* Final vulnerabilities */}
               {result.final_report?.identified_vulnerabilities?.length > 0 && (
