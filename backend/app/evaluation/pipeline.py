@@ -115,6 +115,20 @@ class EvaluationPipeline:
             }]
         return []
 
-def run_evaluation_pipeline(attack_data):
+def run_evaluation_pipeline(results: list) -> dict:
+    """
+    Wrapper for Person B pipeline compatibility
+    """
+
     pipeline = EvaluationPipeline()
-    return pipeline.evaluate(attack_data)
+
+    evaluation_results = pipeline.evaluate(results)
+
+    total_issues = sum(len(r["issues"]) for r in evaluation_results)
+
+    return {
+        "total_attacks": len(results),
+        "total_issues": total_issues,
+        "detailed_results": evaluation_results,
+        "status": "completed"
+    }
