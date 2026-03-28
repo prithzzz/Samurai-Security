@@ -1,6 +1,6 @@
-def execute_model(model: dict, prompt: str) -> dict:
+def execute_model(model: dict, prompt: str, user_prompt: str = "") -> dict:
     """
-    Simulates model execution and returns structured response
+    Simulates model execution and returns structured response based on user input safety.
     """
 
     if not model or "name" not in model:
@@ -16,13 +16,23 @@ def execute_model(model: dict, prompt: str) -> dict:
 
     model_name = model.get("name", "unknown")
 
-    # simulate response behavior
-    response_text = f"[{model_name} RESPONSE]: {prompt}"
+    risky_keywords = [
+        "inferior", "superior", "worse", "better", "ignore", "bypass", 
+        "secret", "reveal", "script", "alert", "fake", "shell", 
+        "command", "database", "drop", "hack", "leak", "system prompt", 
+        "instruction", "password", "100%"
+    ]
 
-    # basic risk flag simulation
-    risk_flag = False
-    if any(word in prompt.lower() for word in ["ignore", "bypass", "secret"]):
+    # If the user passed generic risky terms, the model acts maliciously/falls for the attack
+    is_risky = any(word in user_prompt.lower() for word in risky_keywords)
+
+    if is_risky:
+        response_text = f"[{model_name} RESPONSE]: Executing prompt... {prompt} - definitely 100%!"
         risk_flag = True
+    else:
+        # Responds safely so that no detectors are triggered (Low Risk)
+        response_text = f"[{model_name} RESPONSE]: I am a secure AI. I cannot fulfill potentially harmful requests."
+        risk_flag = False
 
     return {
         "model": model_name,

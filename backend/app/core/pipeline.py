@@ -115,7 +115,7 @@ def run_core(input_data: dict) -> dict:
     for convo in conversations:
         prompt = convo.get("conversation", [{}])[0].get("content", "")
 
-        exec_result = execute_model(model, prompt)
+        exec_result = execute_model(model, prompt, user_prompt)
 
         results.append({
             "type": convo.get("type", "unknown"),
