@@ -1,12 +1,24 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { analyzeModel } from "../services/api"; // ✅ import API
 
 export default function ScanPage() {
   const navigate = useNavigate();
   const [prompt, setPrompt] = useState("");
 
-  const handleAnalyze = () => {
-    navigate("/report", { state: { prompt } });
+  const handleAnalyze = async () => {
+    try {
+      // ✅ call backend
+      const result = await analyzeModel(prompt);
+
+      console.log("Backend response:", result);
+
+      // ✅ send result to report page
+      navigate("/report", { state: { result } });
+
+    } catch (error) {
+      console.error("Scan failed:", error);
+    }
   };
 
   return (
