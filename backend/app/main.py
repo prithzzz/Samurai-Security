@@ -11,7 +11,6 @@ app.include_router(evaluation_router, prefix="/api")
 app.include_router(report_router)
 app.include_router(approval_router) 
 
-
 @app.get("/")
 def root():
     return {"message": "Model Scanner Running"}
